@@ -6,7 +6,7 @@ class MyComponent extends HTMLElement {
   }
   
   connectedCallback(){
-    this.p.textContent='Hola Mundo';
+    this.p.textContent='Hola Mundo soy un custom element de javascript';
     this.appendChild(this.p);
   }
 }
