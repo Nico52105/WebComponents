@@ -4,8 +4,6 @@ class MyTemplete extends HTMLElement {
   }
   
   getTemplate(){
-    const template=document.createElement('template');
-    
     const section=document.createElement('section');
     
     const h2=document.createElement('h2');
@@ -19,6 +17,7 @@ class MyTemplete extends HTMLElement {
     p.innerHTML='Más texto de ejemplo';
     div.appendChild(p);
     
+    const template=document.createElement('template');
     template.innerHTML=section.outerHTML;
     return template;
   }
