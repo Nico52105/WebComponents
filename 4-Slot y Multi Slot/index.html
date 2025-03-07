@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slot</title>
+  <link rel="stylesheet" href="./index.css">
+  <script type='module' src="./my-slot.js"/>
+  <script type='module' src="./my-multi-slot.css"/>
+  <script type='module' src="./my-multi-slot.js"/>
+</head>
+<body>
+  <my-slot>
+      Donde puedo enviar contenido desde  el <b>Html</b> del web component para que este se encarge de renderizalo de la manera definida en el <b>web component</b>.
+  </my-slot>
+  
+  <my-multi-slot>
+    <span slot="Nombre">Nicolas</span>
+    <span slot="Apellido">Fiquitiva Segura</span>
+    <span slot="Edad">38</span>
+  </my-multi-slot>
+</body>
+</script>
+</html>
