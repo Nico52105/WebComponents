@@ -1,6 +1,7 @@
 .tarjeta{
   color:white;
-  border:1px solid black;
+  border:10px solid black;
+  padding: 10px;
 }
 
 .tarjeta>div:first-of-type{
