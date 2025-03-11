@@ -14,34 +14,34 @@ class MyWebcomponentAttributes extends HTMLElement {
     this.Descripcion=this.getAttribute("Descripcion");
     this.Imagen=this.getAttribute("Imagen");
     
-    const span = document.createElement('span');
-    span.classList.add('tarjeta');
+    const div = document.createElement('div');
+    div.classList.add('tarjeta');
     
     console.log(document.getElementById('style-'+Etiqueta));
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.id='style-'+Etiqueta;
     link.href = window. location. href+'/my-webcomponent-attributes.css';
-    span.appendChild(link);
+    div.appendChild(link);
     
     
     const divTitulo= document.createElement('div');
     divTitulo.innerHTML=this.Titulo;
-    span.appendChild(divTitulo);
+    div.appendChild(divTitulo);
     
     const divDescripcion = document.createElement('div');
     divDescripcion.innerHTML = this.Descripcion;
-    span.appendChild(divDescripcion);
+    div.appendChild(divDescripcion);
 
     const divImagen = document.createElement('div');
-    span.appendChild(divImagen);
+    div.appendChild(divImagen);
     
     const imagen= document.createElement('img');
     imagen.src = this.Imagen;
     divImagen.appendChild(imagen);
     
     const template = document.createElement('template');
-    template.innerHTML = span.outerHTML;
+    template.innerHTML = div.outerHTML;
     return template;
   }
   
