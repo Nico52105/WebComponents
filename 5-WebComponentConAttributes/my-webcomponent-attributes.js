@@ -1,3 +1,4 @@
+let Etiqueta='my-webcomponent-attributes';
 class MyWebcomponentAttributes extends HTMLElement {
   Titulo;
   Descripcion;
@@ -16,11 +17,13 @@ class MyWebcomponentAttributes extends HTMLElement {
     const span = document.createElement('span');
     span.classList.add('tarjeta');
     
+    console.log(document.getElementById('style-'+Etiqueta));
     const link = document.createElement('link');
     link.rel = 'stylesheet';
+    link.id='style-'+Etiqueta;
     link.href = window. location. href+'/my-webcomponent-attributes.css';
     span.appendChild(link);
-    console.log(window. location. href);
+    
     
     const divTitulo= document.createElement('div');
     divTitulo.innerHTML=this.Titulo;
@@ -50,4 +53,4 @@ class MyWebcomponentAttributes extends HTMLElement {
     this.render();
   }
 }
-customElements.define("my-webcomponent-attributes", MyWebcomponentAttributes);
+customElements.define(Etiqueta, MyWebcomponentAttributes);
