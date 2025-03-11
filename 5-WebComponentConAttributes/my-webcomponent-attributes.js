@@ -18,8 +18,9 @@ class MyWebcomponentAttributes extends HTMLElement {
     
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = './my-webcomponent-attributes.css';
+    link.href = window. location. href+'/my-webcomponent-attributes.css';
     span.appendChild(link);
+    console.log(window. location. href);
     
     const divTitulo= document.createElement('div');
     divTitulo.innerHTML=this.Titulo;

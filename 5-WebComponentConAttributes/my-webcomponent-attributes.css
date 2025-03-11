@@ -1,11 +1,11 @@
-.tarjeta{
-  color:white;
-  border:10px solid yellowgreen;
+.tarjeta {
+  color: white;
+  border: 10px solid yellowgreen;
   padding: 10px;
 }
 
-.tarjeta>div:first-of-type{
-  color:SeaGreen;
+.tarjeta>div:first-of-type {
+  color: SeaGreen;
   font-weight: bold;
   font-size: 25px;
   text-align: center;
@@ -17,8 +17,8 @@
   align-items: center;
 }
 
-.tarjeta>div>img{
-  background-color:black;
+.tarjeta>div>img {
+  background-color: black;
   padding: 10px;
   width: 50%
 }
