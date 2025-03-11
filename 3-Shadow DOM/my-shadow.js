@@ -20,7 +20,7 @@ class MyShadow extends HTMLElement {
     section.appendChild(div);
     
     const p=document.createElement('p');
-    p.innerHTML='De esta manera puedo proteger los estilos del componente de los estilos definicos de la pagina.';
+    p.innerHTML='De esta manera puedo proteger los estilos del componente de los estilos definidos de la pagina.';
     div.appendChild(p);
     
     const template=document.createElement('template');

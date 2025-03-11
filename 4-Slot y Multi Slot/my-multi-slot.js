@@ -7,6 +7,15 @@ class MyMultiSlot extends HTMLElement {
   getTemplate(){
     const section=document.createElement('section');
     
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = './my-multi-slot.css';
+    section.appendChild(link);
+    
+    const h2 = document.createElement('h2');
+    h2.innerHTML = 'Hola mundo soy un MultiSlot de javascript';
+    section.appendChild(h2);
+    
     const table=document.createElement('table');
     section.appendChild(table);
     

@@ -1,0 +1,23 @@
+.tarjeta{
+  color:white;
+  border:1px solid black;
+}
+
+.tarjeta>div:first-of-type{
+  color:SeaGreen;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+}
+
+.tarjeta>div:nth-of-type(3) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tarjeta>div>img{
+  background-color:black;
+  padding: 10px;
+  width: 50%
+}
