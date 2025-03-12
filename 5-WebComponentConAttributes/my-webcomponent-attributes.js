@@ -17,11 +17,9 @@ class MyWebcomponentAttributes extends HTMLElement {
     const div = document.createElement('div');
     div.classList.add('tarjeta');
     
-    console.log(document.getElementById('style-'+Etiqueta));
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.id='style-'+Etiqueta;
-    link.href = window. location. href+'/my-webcomponent-attributes.css';
+    link.href = window.location.href + '/my-webcomponent-attributes.css';
     div.appendChild(link);
     
     
