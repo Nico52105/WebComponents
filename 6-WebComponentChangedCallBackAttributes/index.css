@@ -1,0 +1,17 @@
+p
+{
+  color:purple;
+}
+
+div
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color:CornflowerBlue;
+}
+
+body{
+  padding: 0px;
+  margin: 0px;
+}
