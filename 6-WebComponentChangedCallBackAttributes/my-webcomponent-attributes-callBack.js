@@ -10,6 +10,7 @@ class MyWebcomponentAttributesCallBack extends HTMLElement {
   }
   
   static get observedAttributes(){
+    console.log("cambio");
     return ["NombreNodo","MensajeValidos","Respuestas"]
   }
   
