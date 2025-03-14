@@ -1,7 +1,7 @@
 let Etiqueta='my-webcomponent-attributes-callback';
 class MyWebcomponentAttributesCallBack extends HTMLElement {
   NombreNodo;
-  MensajeValidos;
+  MensajesValidos;
   Respuestas;
   
   constructor() {
@@ -10,27 +10,27 @@ class MyWebcomponentAttributesCallBack extends HTMLElement {
   }
   
   static get observedAttributes(){
-    console.log("cambio");
-    return ["NombreNodo","MensajeValidos","Respuestas"]
+    console.log("Es muy importante que los Atributos esten en minucula para que sean funcionales.");
+    return ["nombre-nodo","mensajes-validos","respuestas"]
   }
   
   attributeChangedCallback(attr,oldVal,newVal){
-    console.log(attr);
+    console.log(oldVal);
     switch (attr) {
-      case "NombreNodo":
+      case "nombre-nodo":
         this.NombreNodo = newVal;
       break;
-      case "MensajeValidos":
-        this.MensajeValidos = newVal;
+      case "mensajes-validos":
+        this.MensajesValidos = newVal;
       break;
-      case "Respuestas":
+      case "respuestas":
         this.Respuestas = newVal;
       break;
     }
   }
   
   getTemplate() {
-    console.log("Status");
+    console.table(eval(this.Respuestas));
     const div = document.createElement('div');
     div.classList.add('tarjeta');
     
@@ -44,9 +44,13 @@ class MyWebcomponentAttributesCallBack extends HTMLElement {
     divTitulo.innerHTML=this.NombreNodo;
     div.appendChild(divTitulo);
     
-    const divDescripcion = document.createElement('div');
-    divDescripcion.innerHTML = this.MensajeValidos;
-    div.appendChild(divDescripcion);
+    const divMensajesValidos = document.createElement('div');
+    divMensajesValidos.innerHTML = this.MensajesValidos;
+    div.appendChild(divMensajesValidos);
+    
+    const divRespuestas = document.createElement('div');
+    divRespuestas.innerHTML = this.Respuestas;
+    div.appendChild(divRespuestas);
 
     const template = document.createElement('template');
     template.innerHTML = div.outerHTML;

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadow DOM</title>
+  <link rel="stylesheet" href="./index.css">
+  <script type='module' src="./EditorFlujo.js"></script>
+</head>
+<body>
+  <div>
+    <editor-flujo flujo='{
+  "Flujo": [
+    {
+      "Nombre": "Inicio",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "", "PasoFinal", "Salir" ],
+          "MensajesValidos": [ "*" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje 1", "Mensaje 2", "Mensaje 3", "Mensaje 3.1" ],
+      "OpcionesTexto": [ "1. Si", "2. No", "3. Datos personales" ]
+    },
+    {
+      "Nombre": "Paso1",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Inicio", "Reinicio" ],
+          "MensajesValidos": [ "1.Si", "1", "Si" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje 4", "Mensaje 5", "Mensaje 6" ],
+      "OpcionesTexto": [ "1. Si", "2. No" ]
+    },
+    {
+      "Nombre": "Paso2",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Paso1" ],
+          "MensajesValidos": [ "1.Si", "1", "Si" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje 7", "Mensaje 8", "Mensaje 9" ],
+      "OpcionesTexto": [ "1. Si", "2. No" ]
+    },
+    {
+      "Nombre": "Datos personales",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Inicio" ],
+          "MensajesValidos": [ "*" ]
+        }
+      ],
+      "Respuestas": [ "Vamos a solicitar unos datos personales:", "Cual es tu nombre:" ],
+      "OpcionesTexto": []
+    },
+    {
+      "Nombre": "Datos personales 1",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Datos personales" ],
+          "MensajesValidos": [ "*" ]
+        }
+      ],
+      "Respuestas": [ "Cual es tu apellido:" ],
+      "OpcionesTexto": []
+    },
+    {
+      "Nombre": "Datos personales 2",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Datos personales 1" ],
+          "MensajesValidos": [ "*" ]
+        }
+      ],
+      "Respuestas": [ "Cual es tu edad:" ],
+      "OpcionesTexto": []
+    },
+    {
+      "Nombre": "PasoFinal",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Inicio", "Paso1", "Paso2", "Reinicio" ],
+          "MensajesValidos": [ "2.No", "2", "No" ]
+        },
+        {
+          "NombreInteraccion": [ "Paso2" ],
+          "MensajesValidos": [ "1.Si", "1", "Si" ]
+        },
+        {
+          "NombreInteraccion": [ "Datos personales 2" ],
+          "MensajesValidos": [ "*" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje Final" ],
+      "OpcionesTexto": []
+    },
+    {
+      "Nombre": "Error",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "" ],
+          "MensajesValidos": []
+        }
+      ],
+      "Respuestas": [ "Lo siento no entiendo tu solicitud \n quieres regresar al inicio? \n repetir ultima pregunta? \n Salir" ],
+      "OpcionesTexto": [ "1. Inicio", "2. Reperir", "3. Salir" ]
+    },
+    {
+      "Nombre": "Reinicio",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Error" ],
+          "MensajesValidos": [ "1. Inicio", "1", "Inicio" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje Reinicio 1", "Mensaje Reinicio 2", "Mensaje Reinicio 3" ],
+      "OpcionesTexto": [ "1. Si", "2. No" ]
+    },
+    {
+      "Nombre": "Salir",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Error" ],
+          "MensajesValidos": [ "3. Salir", "3", "Salir" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje Salida" ],
+      "OpcionesTexto": []
+    }
+  ],
+  "Preguntas": [
+    {
+      "PreguntaTexto": "¿Inicio Flujo?",
+      "InteraccionNombre": "Inicio",
+      "Respuesta": ""
+    },
+    {
+      "PreguntaTexto": "Nombre",
+      "InteraccionNombre": "Datos personales",
+      "Respuesta": ""
+    },
+    {
+      "PreguntaTexto": "Apellido",
+      "InteraccionNombre": "Datos personales 1",
+      "Respuesta": ""
+    },
+    {
+      "PreguntaTexto": "Edad",
+      "InteraccionNombre": "Datos personales 2",
+      "Respuesta": ""
+    }
+  ],
+  "Formularios": [
+    {
+      "Nombre": "Datos personales",
+      "InteraccionEjecucion": "PasoFinal",
+      "Accion": "Guardar drive",
+      "Respuesta": {
+        "Nombre": "",
+        "Apellido": "",
+        "Edad": ""
+      }
+    }
+  ]
+}
+'/>
+  </div>
+  
+  <a href="..">Regresar al Inicio</a>
+</body>
+</html>
