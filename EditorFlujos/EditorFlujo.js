@@ -24,71 +24,57 @@ class EditorFlujo extends HTMLElement {
     console.log(ObjetoFlujo.Flujo);
 
     const div = document.createElement('div');
-    div.classList.add('tarjeta');
+    div.classList.add('tarjetaX');
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = window.location.href + 'EditorFlujo.css';
     div.appendChild(link);
 
-    let indexNodoSeleccionado = 0;
-    let nodoPadre;
-    let nodosBuscados = ["Inicio"];
-    let proximosNodosBuscados = [];
-
-
-    for (var i = 0; i < nodosBuscados.length; i++) {
-      console.log("nodosBuscados");
-      console.log(nodosBuscados);
-
-      const divNivel = document.createElement('div');
-      divNivel.classList.add('nivel');
-      
-      div.appendChild(divNivel);
-
-      for (var j = 0; j < ObjetoFlujo.Flujo.length; j++) {
-        if (nodosBuscados.indexOf(ObjetoFlujo.Flujo[j].Nombre)!=-1) {
-          
-          const divNodo = document.createElement('div');
-          divNivel.appendChild(divNodo);
-
-          const divNombreNodo = document.createElement('div');
-          divNombreNodo.innerHTML = ObjetoFlujo.Flujo[j].Nombre;
-          divNodo.appendChild(divNombreNodo);
-
-          //for (var k = 0; k < ObjetoFlujo.Flujo[j].Respuestas.length; k++) {
-          //  const divMensajesNodo = document.createElement('div');
-          //  divMensajesNodo.innerHTML = ObjetoFlujo.Flujo[j].Respuestas[k];
-          //  divNodo.appendChild(divMensajesNodo);
-          //}
-          //
-          //for (var k = 0; k < ObjetoFlujo.Flujo[j].OpcionesTexto.length; k++) {
-          //  const divOpcionesNodo = document.createElement('div');
-          //  divOpcionesNodo.innerHTML = ObjetoFlujo.Flujo[j].OpcionesTexto[k];
-          //  divNodo.appendChild(divOpcionesNodo);
-          //}
-        }
-        else {
-          for (var k = 0; k < ObjetoFlujo.Flujo[j].EnlacesPermitidos.length; k++) {
-            if (ObjetoFlujo.Flujo[j].EnlacesPermitidos[k].NombreInteraccion.indexOf(nodosBuscados[indexNodoSeleccionado])!=-1) {
-              console.log("Validar que no exista el nodo"); 
-              console.log(ObjetoFlujo.Flujo[j].Nombre);              
-              if (proximosNodosBuscados.indexOf(ObjetoFlujo.Flujo[j].Nombre) == -1) {
-                proximosNodosBuscados.push(ObjetoFlujo.Flujo[j].Nombre);
-                console.log("proximosNodosBuscados");
-                console.log(proximosNodosBuscados);
-              }
+    let arbol={nodos:[],enlaces:{}};
+    for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
+      const divNodo = document.createElement('div');
+      const spanNombreNodo = document.createElement('span');
+      spanNombreNodo.innerHTML = ObjetoFlujo.Flujo[i].Nombre;
+      divNodo.appendChild(spanNombreNodo);
+      div.appendChild(divNodo);
+      arbol.nodos.push(ObjetoFlujo.Flujo[i].Nombre);      
+      for (let j = 0; j < ObjetoFlujo.Flujo[i].EnlacesPermitidos.length; j++) {
+        for (let k = 0; k < ObjetoFlujo.Flujo[i].EnlacesPermitidos[j].NombreInteraccion.length; k++) {
+          console.log(ObjetoFlujo.Flujo[i].EnlacesPermitidos[j].NombreInteraccion[k]);
+          const spanEnlaces = document.createElement('span');
+          spanEnlaces.innerHTML = ObjetoFlujo.Flujo[i].EnlacesPermitidos[j].NombreInteraccion[k];
+          divNodo.appendChild(spanEnlaces);
+          if(arbol.enlaces[ObjetoFlujo.Flujo[i].Nombre]===undefined){
+            arbol.enlaces[ObjetoFlujo.Flujo[i].Nombre]=[];
+          }
+          arbol.enlaces[ObjetoFlujo.Flujo[i].Nombre].push(ObjetoFlujo.Flujo[i].EnlacesPermitidos[j].NombreInteraccion[k]);          
+        }        
+      }
+    }
+    console.log(arbol);
+    let estructura = [["Inicio"]];
+    let nodosAgregados = ["Inicio"];
+    for (let i = 0; i < estructura.length; i++) {
+      let nivel=[];
+      for (let j = 0; j < estructura[i].length; j++) {
+        for (let k = 0; k < arbol.nodos.length; k++) {
+          if(arbol.enlaces[arbol.nodos[k]].indexOf(estructura[i][j])>=0){
+            if(nodosAgregados.indexOf(arbol.nodos[k])<0){
+              nodosAgregados.push(arbol.nodos[k]);
+              nivel.push(arbol.nodos[k]);
             }
+            else{
+              nivel.push("#"+arbol.nodos[k]);
+            } 
           }
         }
       }
-      indexNodoSeleccionado++;
-      if(nodosBuscados.length==indexNodoSeleccionado){
-        nodosBuscados = proximosNodosBuscados;
-        proximosNodosBuscados = [];
-        indexNodoSeleccionado = 0;
-      }    
+      if(nivel.length>0){
+        estructura.push(nivel);
+      }           
     }
+    console.log(estructura);
     const template = document.createElement('template');
     console.log(div.outerHTML);
     template.innerHTML = div.outerHTML;
