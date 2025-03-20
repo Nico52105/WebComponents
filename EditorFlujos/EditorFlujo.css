@@ -1,28 +1,3 @@
-.tarjeta {
-  color: white;
-  border: 10px solid yellowgreen;
-  padding: 10px;
-}
-
-.tarjeta>div:first-of-type {
-  color: SeaGreen;
-  font-weight: bold;
-  font-size: 25px;
+.celdaFlujo{
   text-align: center;
-}
-
-.tarjeta>div:nth-of-type(3) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.tarjeta>div>img {
-  background-color: black;
-  padding: 10px;
-  width: 50%
-}
-
-.nivel{
-  display:flex;
 }

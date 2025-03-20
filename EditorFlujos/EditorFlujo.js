@@ -70,8 +70,53 @@ class EditorFlujo extends HTMLElement {
         estructura.push(nivel);
       }           
     }
+    
     console.table(estructura);
     console.table(hijosEstructura);
+
+    let columnasFlujo=0;
+    for (let i = 0; i < hijosEstructura.length; i++) {
+      if(hijosEstructura[i].length>columnasFlujo){
+        columnasFlujo=hijosEstructura[i].length;
+      }     
+    }
+    hijosEstructura[0][0]=columnasFlujo;
+
+    let tabla = document.createElement('table');
+    tabla.classList.add('tablaFlujo');
+    for (let i = 0; i < estructura.length; i++) {
+      let fila = document.createElement('tr');
+      fila.classList.add('filaFlujo');
+      for (let j = 0; j < estructura[i].length; j++) {
+        let celda = document.createElement('td');
+        let celdaTexto = document.createElement('div');
+        
+        let divNombreNodo = document.createElement('div');
+        divNombreNodo.innerHTML=estructura[i][j];
+        celdaTexto.appendChild(divNombreNodo);
+        for (let k = 0; k < ObjetoFlujo.Flujo.length; k++) {
+          if(ObjetoFlujo.Flujo[k].Nombre==estructura[i][j]){
+            for (let l = 0; l < ObjetoFlujo.Flujo[k].Respuestas.length; l++) {
+              let divRespuestaInteraccion = document.createElement('div');
+              divRespuestaInteraccion.innerHTML=ObjetoFlujo.Flujo[k].Respuestas[l];
+              celdaTexto.appendChild(divRespuestaInteraccion);
+            }
+          }
+        }             
+        
+        celda.appendChild(celdaTexto);
+        celda.colSpan = hijosEstructura[i][j];
+        if ( hijosEstructura[i][j]==0 && i<hijosEstructura.length-1){ 
+          hijosEstructura[i+1].splice(j,0,0);
+          estructura[i+1].splice(j,0,"");
+        }
+        celda.classList.add('celdaFlujo');
+        fila.appendChild(celda);
+      }
+      tabla.appendChild(fila);
+    }
+    div.appendChild(tabla);
+    
 
     const template = document.createElement('template');
     console.log(div.outerHTML);
