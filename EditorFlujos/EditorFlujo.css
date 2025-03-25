@@ -1,3 +1,7 @@
+td>div>div:first-child {
+  color:red
+}
+
 .celdaFlujo{
   text-align: center;
 }
