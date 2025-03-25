@@ -24,7 +24,7 @@ class EditorFlujo extends HTMLElement {
     console.log(ObjetoFlujo.Flujo);
 
     const div = document.createElement('div');
-    div.classList.add('tarjetaX');
+    div.classList.add('diagramaFlujo');
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -94,15 +94,17 @@ class EditorFlujo extends HTMLElement {
         let divNombreNodo = document.createElement('div');
         divNombreNodo.innerHTML=estructura[i][j];
         celdaTexto.appendChild(divNombreNodo);
+        let divRespuestas = document.createElement('div');
         for (let k = 0; k < ObjetoFlujo.Flujo.length; k++) {
           if(ObjetoFlujo.Flujo[k].Nombre==estructura[i][j]){
             for (let l = 0; l < ObjetoFlujo.Flujo[k].Respuestas.length; l++) {
               let divRespuestaInteraccion = document.createElement('div');
               divRespuestaInteraccion.innerHTML=ObjetoFlujo.Flujo[k].Respuestas[l];
-              celdaTexto.appendChild(divRespuestaInteraccion);
+              divRespuestas.appendChild(divRespuestaInteraccion);
             }
           }
-        }             
+        }
+        celdaTexto.appendChild(divRespuestas);             
         
         celda.appendChild(celdaTexto);
         celda.colSpan = hijosEstructura[i][j];

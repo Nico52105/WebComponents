@@ -1,7 +1,28 @@
-td>div>div:first-child {
+.diagramaFlujo{
+  display: flex;
+  justify-content: center;
+}
+
+.diagramaFlujo td{
+  align-content: baseline;
+  padding: 10px;
+}
+
+.diagramaFlujo td>div{
+  height: 100%;
+}
+
+.diagramaFlujo td>div>div:first-child {
   color:red
 }
 
-.celdaFlujo{
-  text-align: center;
+.diagramaFlujo td>div>div {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+}
+
+.diagramaFlujo td>div>div>div {
+  display: block;
 }
