@@ -3,26 +3,60 @@
   justify-content: center;
 }
 
+.diagramaFlujo table{
+  border-collapse: collapse;
+}
 .diagramaFlujo td{
-  align-content: baseline;
-  padding: 10px;
+  vertical-align: top;
+  
 }
 
 .diagramaFlujo td>div{
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.diagramaFlujo td>div>div:first-child {
-  color:red
+.diagramaFlujo td>div>div:first-child {  
+  text-align: center;
+  width: 100%;
+  height: 30px;
+  border: none;
+  padding-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+
+.diagramaFlujo td>div>div:first-child>div {
+  width: 50%;
+  height: 15px;
+  box-sizing: border-box;
+}
+
+.diagramaFlujo td>div>div:first-child>div:first-child {
+  border-right: solid 2px black;
+}
+
+.diagramaFlujo td>div>div:first-child>div:last-child {
+  width: 100%;
+  color:white;
+  background-color: black;
+  height: 20px;
+  border-radius: 20px;
 }
 
 .diagramaFlujo td>div>div {
   display: flex;
-  justify-content: center;
-  align-items: start;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 150px;
+  padding: 5px;
+  border: solid 1px black;
+  border-radius: 20px;
 }
 
-.diagramaFlujo td>div>div>div {
-  display: block;
+.diagramaFlujo td>div>div:nth-child(2) {
+  background-color:#ece5dd;
 }
+
