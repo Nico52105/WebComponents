@@ -28,7 +28,7 @@ class EditorFlujo extends HTMLElement {
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = window.location.origin + '/EditorFlujos/EditorFlujo.css';
+    link.href = window.location.origin + '/WebComponents/EditorFlujos/EditorFlujo.css';
     div.appendChild(link);
 
     let arbol = { nodos: [], enlaces: {} };
