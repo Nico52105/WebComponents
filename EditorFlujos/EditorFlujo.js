@@ -28,7 +28,7 @@ class EditorFlujo extends HTMLElement {
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = window.location.origin + '/WebComponents/EditorFlujos/EditorFlujo.css';
+    link.href = window.location.origin + '/EditorFlujos/EditorFlujo.css';
     div.appendChild(link);
 
     let arbol = { nodos: [], enlaces: {} };
@@ -44,72 +44,98 @@ class EditorFlujo extends HTMLElement {
       }
     }
     console.log(arbol);
-    let estructura = [["Inicio"]];
-    let hijosEstructura = [];
-    let nodosAgregados = ["Inicio"];
-    for (let i = 0; i < estructura.length; i++) {
+
+    let flujo = [["Inicio"]];
+    let nodosAgregados = [flujo[0][0]];
+    for (let i = 0; i < flujo.length; i++) {
       let nivel = [];
-      hijosEstructura.push([]);
-      for (let j = 0; j < estructura[i].length; j++) {
-        let hijosNodo = 0;
+      for (let j = 0; j < flujo[i].length; j++) {
         for (let k = 0; k < arbol.nodos.length; k++) {
-          if (arbol.enlaces[arbol.nodos[k]].indexOf(estructura[i][j]) >= 0) {
-            hijosNodo++;
-            if (nodosAgregados.indexOf(arbol.nodos[k]) < 0) {
-              nodosAgregados.push(arbol.nodos[k]);
-              nivel.push(arbol.nodos[k]);
+          let nodoPadre = flujo[i][j].split("-")[0];
+          if (arbol.enlaces[arbol.nodos[k]].indexOf(nodoPadre) >= 0) {
+            let nombreNodo = arbol.nodos[k];
+            if (nodosAgregados.indexOf(nombreNodo) >= 0) {
+              nombreNodo = "#" + nombreNodo;
             }
             else {
-              if  (arbol.nodos[k] != "Inicio") {
-                nivel.push("#" + arbol.nodos[k]); 
-              }              
+              nodosAgregados.push(nombreNodo);
             }
+            nivel.push(nombreNodo + "-" + nodoPadre);
           }
         }
-        hijosEstructura[i].push(hijosNodo);
       }
       if (nivel.length > 0) {
-        estructura.push(nivel);
+        flujo.push(nivel);
       }
     }
+    console.table(flujo);
 
-    console.table(estructura);
-    console.table(hijosEstructura);
-
-    let columnasFlujo = 0;
-    for (let i = 0; i < hijosEstructura.length; i++) {
-      let contarColumnas = 0;
-      for (let j = 0; j < hijosEstructura[i].length; j++) {
-        contarColumnas += hijosEstructura[i][j];
-      }
-      if (contarColumnas > columnasFlujo) {
-        columnasFlujo = contarColumnas;
+    let anchoMaximo = 0;
+    let nivelAnchoMaximo = 0;
+    for (let i = 0; i < flujo.length; i++) {
+      if (flujo[i].length > anchoMaximo) {
+        anchoMaximo = flujo[i].length;
+        nivelAnchoMaximo = i;
       }
     }
-
-    hijosEstructura[0][0] = columnasFlujo;
-    console.table(hijosEstructura);
+    //ordenar espacio entre hijos
+    for (let i = nivelAnchoMaximo; i < flujo.length - 1; i++) {
+      let nivel = [];
+      for (let j = 0; j < flujo[i].length; j++) {
+        let nodoPadre = flujo[i][j].split("-")[0];
+        let nodohijo = flujo[i + 1][j] ? flujo[i + 1][j].split("-")[1] : "";
+        if (nodoPadre == nodohijo && nodohijo != "") {
+          nivel.push(flujo[i + 1][j]);
+        }
+        else {
+          flujo[i + 1].splice(j, 0, "");
+          nivel.push("");
+        }
+      };
+      flujo[i + 1] = nivel;
+    }
+    //ordenar espacio entre padres
+    for (let i = nivelAnchoMaximo; i >= 1; i--) {
+      let nivel = [];
+      for (let j = 0; j < flujo[i].length; j++) {
+        let nodoPadre = flujo[i - 1][j] ? flujo[i - 1][j].split("-")[0] : "";
+        let nodohijo = flujo[i][j].split("-")[1];
+        if (nodoPadre == nodohijo && nodohijo != "") {
+          nivel.push(flujo[i - 1][j]);
+        }
+        else {
+          flujo[i - 1].splice(j, 0, "");
+          nivel.push("");
+        }
+      };
+      flujo[i - 1] = nivel;
+    }
+    console.table(flujo);
 
     let tabla = document.createElement('table');
     tabla.classList.add('tablaFlujo');
-    for (let i = 0; i < estructura.length; i++) {
+    for (let i = 0; i < flujo.length; i++) {
       let fila = document.createElement('tr');
       fila.classList.add('filaFlujo');
-      for (let j = 0; j < estructura[i].length; j++) {
+      for (let j = 0; j < flujo[i].length; j++) {
         let celda = document.createElement('td');
         let celdaTexto = document.createElement('div');
 
-        let divNombreNodo = document.createElement('div');
-        divNombreNodo.appendChild(document.createElement('div'));
-        divNombreNodo.appendChild(document.createElement('div'));
-        let divTextoNodo=document.createElement('div');
-        divTextoNodo.innerHTML = estructura[i][j];
-        divNombreNodo.appendChild(divTextoNodo);
-        celdaTexto.appendChild(divNombreNodo);
+        let nombreNodo = flujo[i][j].split("-")[0];
+        if (nombreNodo != "" && nombreNodo != "#Inicio") {
+          let divNombreNodo = document.createElement('div');
+          divNombreNodo.appendChild(document.createElement('div'));
+          divNombreNodo.appendChild(document.createElement('div'));
+          let divTextoNodo = document.createElement('div');
+          divTextoNodo.innerHTML = nombreNodo;
+          divNombreNodo.appendChild(divTextoNodo);
+          celdaTexto.appendChild(divNombreNodo);
+        }
 
 
-        for (let k = 0; k < ObjetoFlujo.Flujo.length; k++) {
-          if (ObjetoFlujo.Flujo[k].Nombre == estructura[i][j].replace("#", "") ) {
+
+        /* for (let k = 0; k < ObjetoFlujo.Flujo.length; k++) {
+          if (ObjetoFlujo.Flujo[k].Nombre == flujo[i][j].replace("#", "")) {
             if (ObjetoFlujo.Flujo[k].Respuestas.length > 0) {
               let divRespuestas = document.createElement('div');
               for (let l = 0; l < ObjetoFlujo.Flujo[k].Respuestas.length; l++) {
@@ -120,15 +146,10 @@ class EditorFlujo extends HTMLElement {
               celdaTexto.appendChild(divRespuestas);
             }
           }
-        }
+        } */
 
 
         celda.appendChild(celdaTexto);
-        celda.colSpan = hijosEstructura[i][j];
-        if (hijosEstructura[i][j] == 0 && i < hijosEstructura.length - 1) {
-          [i + 1].splice(j, 0, 0);
-          estructura[i + 1].splice(j, 0, "");
-        }        
         fila.appendChild(celda);
       }
       tabla.appendChild(fila);
