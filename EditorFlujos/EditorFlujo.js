@@ -74,10 +74,12 @@ class EditorFlujo extends HTMLElement {
     let nivelAnchoMaximo = 0;
     for (let i = 0; i < flujo.length; i++) {
       if (flujo[i].length > anchoMaximo) {
-        anchoMaximo = flujo[i].length;
         nivelAnchoMaximo = i;
+        anchoMaximo = flujo[i].length;
       }
     }
+    console.log("NivelAnchoMaximo:" + nivelAnchoMaximo);
+    console.log("AnchoMaximo:" + anchoMaximo);
     //ordenar espacio entre hijos
     for (let i = nivelAnchoMaximo; i < flujo.length - 1; i++) {
       let nivel = [];
@@ -94,6 +96,7 @@ class EditorFlujo extends HTMLElement {
       };
       flujo[i + 1] = nivel;
     }
+    console.table(flujo);
     //ordenar espacio entre padres
     for (let i = nivelAnchoMaximo; i >= 1; i--) {
       let nivel = [];
@@ -131,23 +134,22 @@ class EditorFlujo extends HTMLElement {
           divNombreNodo.appendChild(divTextoNodo);
           celdaTexto.appendChild(divNombreNodo);
         }
-
-
-
-        /* for (let k = 0; k < ObjetoFlujo.Flujo.length; k++) {
-          if (ObjetoFlujo.Flujo[k].Nombre == flujo[i][j].replace("#", "")) {
-            if (ObjetoFlujo.Flujo[k].Respuestas.length > 0) {
-              let divRespuestas = document.createElement('div');
-              for (let l = 0; l < ObjetoFlujo.Flujo[k].Respuestas.length; l++) {
-                let divRespuestaInteraccion = document.createElement('div');
-                divRespuestaInteraccion.innerHTML = ObjetoFlujo.Flujo[k].Respuestas[l];
-                divRespuestas.appendChild(divRespuestaInteraccion);
-              }
-              celdaTexto.appendChild(divRespuestas);
+        if (i<nivelAnchoMaximo) {
+          let colSpan = 1;
+          for (let k = j + 1; k < flujo[i].length; k++) {
+            let nombreSiguienteNodo = flujo[i][k].split("-")[0];
+            if (nombreSiguienteNodo == "") {
+              j = k;
+              colSpan = colSpan + 1;
+            }
+            else {
+              k = flujo[i].length;
             }
           }
-        } */
-
+          if (colSpan != 1) {
+            celda.setAttribute("colspan", colSpan);
+          }
+        }
 
         celda.appendChild(celdaTexto);
         fila.appendChild(celda);
