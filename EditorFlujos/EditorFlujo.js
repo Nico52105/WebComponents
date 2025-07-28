@@ -31,6 +31,35 @@ class EditorFlujo extends HTMLElement {
     link.href = window.location.origin + '/EditorFlujos/EditorFlujo.css';
     div.appendChild(link);
 
+    let caminos = [];
+    let nodosVisitados = [];
+    for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
+      let nodoActual = ObjetoFlujo.Flujo[i].Nombre;
+      for (let j = 0; j < ObjetoFlujo.Flujo.length; j++) {
+        for (let k = 0; k < ObjetoFlujo.Flujo[j].EnlacesPermitidos.length; k++) {
+          if (ObjetoFlujo.Flujo[j].EnlacesPermitidos[k].NombreInteraccion.indexOf(nodoActual) >= 0) {
+            let nodoAgregado = false;
+            for (let l = 0; l < caminos.length; l++) {
+              let nodosCamino = caminos[l].split("-");
+              if (nodosCamino.indexOf(nodoActual) == 0) {
+                caminos[l] = ObjetoFlujo.Flujo[j].Nombre + "-" + caminos[l];
+                nodoAgregado = true;
+              }
+              if (nodosCamino.indexOf(nodoActual) > 0) {
+                //caminos.push(ObjetoFlujo.Flujo[j].Nombre + "-" + nodosCamino.slice(nodosCamino.indexOf(nodoActual)-1).join("-"));
+                //nodoAgregado = true;
+              }
+            }
+            if (!nodoAgregado) {
+              caminos.push(ObjetoFlujo.Flujo[j].Nombre + "-" + nodoActual);
+            }
+          }
+        }
+      }
+      nodosVisitados.push(nodoActual);
+    }
+    console.log("Caminos encontrados: ", caminos);
+
     let arbol = { nodos: [], enlaces: {} };
     for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
       arbol.nodos.push(ObjetoFlujo.Flujo[i].Nombre);
@@ -119,17 +148,36 @@ class EditorFlujo extends HTMLElement {
       fila.classList.add('filaFlujo');
       for (let j = 0; j < flujo[i].length; j++) {
         let celda = document.createElement('td');
-        let celdaTexto = document.createElement('div');
 
         let nombreNodo = flujo[i][j].split("-")[0];
         if (nombreNodo != "" && nombreNodo != "#Inicio") {
-          let divNombreNodo = document.createElement('div');
-          divNombreNodo.appendChild(document.createElement('div'));
-          divNombreNodo.appendChild(document.createElement('div'));
+          let divNodo = document.createElement('div');
           let divTextoNodo = document.createElement('div');
           divTextoNodo.innerHTML = nombreNodo;
-          divNombreNodo.appendChild(divTextoNodo);
-          celdaTexto.appendChild(divNombreNodo);
+          let divEdicionNodo = document.createElement('div');
+          divEdicionNodo.innerHTML = "+";
+          divNodo.appendChild(divEdicionNodo);
+          divEdicionNodo = document.createElement('div');
+          divEdicionNodo.innerHTML = "+";
+          divNodo.appendChild(divEdicionNodo);
+          divNodo.appendChild(divTextoNodo);
+          celda.appendChild(divNodo);
+        }
+
+        //Calcula el colspan para los nodos padre
+        if (i < nivelAnchoMaximo) {
+          let colSpan = 1;
+          while (flujo[i][j + colSpan] == "") {
+            colSpan = colSpan + 1;
+          }
+
+          if (colSpan - 1 > 0) {
+            celda.setAttribute('colspan', colSpan);
+            j = j + (colSpan - 1);
+          }
+        }
+        else {
+          celda.classList.add('celdaHijo');
         }
 
 
@@ -147,9 +195,6 @@ class EditorFlujo extends HTMLElement {
             }
           }
         } */
-
-
-        celda.appendChild(celdaTexto);
         fila.appendChild(celda);
       }
       tabla.appendChild(fila);

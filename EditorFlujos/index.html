@@ -63,15 +63,26 @@
           "MensajesValidos": [ "*" ]
         }
       ],
-      "Respuestas": [ "Cual es tu apellido:" ],
-      "OpcionesTexto": []
+      "Respuestas": [ "Cual es tu genero:" ],
+      "OpcionesTexto": ["1. Masculino", "2. Femenimo"]
     },
     {
-      "Nombre": "Datos personales 2",
+      "Nombre": "Datos personales M1",
       "EnlacesPermitidos": [
         {
           "NombreInteraccion": [ "Datos personales 1" ],
-          "MensajesValidos": [ "*" ]
+          "MensajesValidos": [ "1. Masculino", "1", "Masculino" ]
+        }
+      ],
+      "Respuestas": [ "Cual es tu edad:" ],
+      "OpcionesTexto": []
+    },
+    {
+      "Nombre": "Datos personales F1",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Datos personales 1" ],
+          "MensajesValidos": [ "2. Femenimo", "2", "Femenimo" ]
         }
       ],
       "Respuestas": [ "Cual es tu edad:" ],
@@ -89,7 +100,7 @@
           "MensajesValidos": [ "1.Si", "1", "Si" ]
         },
         {
-          "NombreInteraccion": [ "Datos personales 2" ],
+          "NombreInteraccion": [ "Datos personales M1", "Datos personales F1" ],
           "MensajesValidos": [ "*" ]
         }
       ],

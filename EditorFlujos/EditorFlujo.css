@@ -17,46 +17,37 @@
   flex-wrap: wrap;
 }
 
-.diagramaFlujo td>div>div:first-child {  
-  text-align: center;
-  width: 100%;
-  height: 30px;
-  border: none;
-  padding-bottom: 5px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 3px;
-}
-
-.diagramaFlujo td>div>div:first-child>div {
-  width: 50%;
-  height: 15px;
-  box-sizing: border-box;
-}
-
-.diagramaFlujo td>div>div:first-child>div:first-child {
-  border-right: solid 2px black;
-}
-
-.diagramaFlujo td>div>div:first-child>div:last-child {
-  width: 100%;
-  color:white;
-  background-color: black;
-  height: 20px;
-  border-radius: 20px;
-}
-
 .diagramaFlujo td>div>div {
+  width: 50%;
+  min-height: 20px;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  width: 150px;
-  padding: 5px;
-  border: solid 1px black;
-  border-radius: 20px;
+  justify-content: center;
 }
 
-.diagramaFlujo td>div>div:nth-child(2) {
-  background-color:#ece5dd;
+.diagramaFlujo td>div>div:last-child {  
+  width: 100%;  
+  padding: 0px 10px;
 }
 
+.diagramaFlujo td>div>div:nth-child(1){
+  border-top: solid 2px black;
+}
+
+.diagramaFlujo td>div>div:nth-child(2){
+  border-top: solid 2px black;
+  border-left: solid 2px black;
+}
+
+.diagramaFlujo td:nth-child(1)>div>div:nth-child(1){
+  border-top: none;
+}
+
+.diagramaFlujo td:last-child>div>div:nth-child(2){
+  border-top: none;
+}
+
+
+.diagramaFlujo .celdaHijo >div>div{
+  border-top: none !important;
+}
