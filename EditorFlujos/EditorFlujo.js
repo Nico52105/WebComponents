@@ -46,8 +46,13 @@ class EditorFlujo extends HTMLElement {
                 nodoAgregado = true;
               }
               if (nodosCamino.indexOf(nodoActual) > 0) {
-                //caminos.push(ObjetoFlujo.Flujo[j].Nombre + "-" + nodosCamino.slice(nodosCamino.indexOf(nodoActual)-1).join("-"));
-                //nodoAgregado = true;
+                let nuevoCamino="";
+                for (var m = nodosCamino.indexOf(nodoActual); m < nodosCamino.length; m++) {
+                  nuevoCamino=nuevoCamino+"-"+nodosCamino[m];
+                }
+                caminos.splice(l+1,0,ObjetoFlujo.Flujo[j].Nombre  +nuevoCamino);
+                nodoAgregado = true;
+                break;
               }
             }
             if (!nodoAgregado) {
