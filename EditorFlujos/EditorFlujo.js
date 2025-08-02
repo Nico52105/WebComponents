@@ -39,18 +39,22 @@ class EditorFlujo extends HTMLElement {
         for (let k = 0; k < ObjetoFlujo.Flujo[j].EnlacesPermitidos.length; k++) {
           if (ObjetoFlujo.Flujo[j].EnlacesPermitidos[k].NombreInteraccion.indexOf(nodoActual) >= 0) {
             let nodoAgregado = false;
-            for (let l = 0; l < caminos.length; l++) {
+            for (let l = caminos.length - 1; l >= 0; l--) {
               let nodosCamino = caminos[l].split("-");
               if (nodosCamino.indexOf(nodoActual) == 0) {
                 caminos[l] = ObjetoFlujo.Flujo[j].Nombre + "-" + caminos[l];
                 nodoAgregado = true;
               }
               if (nodosCamino.indexOf(nodoActual) > 0) {
-                let nuevoCamino="";
-                for (var m = nodosCamino.indexOf(nodoActual); m < nodosCamino.length; m++) {
-                  nuevoCamino=nuevoCamino+"-"+nodosCamino[m];
+                let nuevoCamino = [];
+                for (var m = nodosCamino.length - 1; m >= nodosCamino.indexOf(nodoActual); m--) {
+                  nuevoCamino.push(nodosCamino[m]);
                 }
-                caminos.splice(l+1,0,ObjetoFlujo.Flujo[j].Nombre  +nuevoCamino);
+                nuevoCamino.push(ObjetoFlujo.Flujo[j].Nombre);
+                nuevoCamino=nuevoCamino.reverse();
+                if (caminos.indexOf(nuevoCamino.join("-")) < 0) {
+                  caminos.splice(l + 1, 0, nuevoCamino.join("-"));
+                }
                 nodoAgregado = true;
                 break;
               }
@@ -64,6 +68,10 @@ class EditorFlujo extends HTMLElement {
       nodosVisitados.push(nodoActual);
     }
     console.log("Caminos encontrados: ", caminos);
+
+    //Graficar Caminos
+    
+
 
     let arbol = { nodos: [], enlaces: {} };
     for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
