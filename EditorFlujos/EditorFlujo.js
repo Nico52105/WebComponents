@@ -40,180 +40,97 @@ class EditorFlujo extends HTMLElement {
           if (ObjetoFlujo.Flujo[j].EnlacesPermitidos[k].NombreInteraccion.indexOf(nodoActual) >= 0) {
             let nodoAgregado = false;
             for (let l = caminos.length - 1; l >= 0; l--) {
-              let nodosCamino = caminos[l].split("-");
-              if (nodosCamino.indexOf(nodoActual) == 0) {
-                caminos[l] = ObjetoFlujo.Flujo[j].Nombre + "-" + caminos[l];
+              let nodosCamino = caminos[l];
+              if (nodosCamino.indexOf(nodoActual) == nodosCamino.length - 1) {
+                if (caminos[l].indexOf(ObjetoFlujo.Flujo[j].Nombre) < 0) {
+                  caminos[l].push(ObjetoFlujo.Flujo[j].Nombre);
+                }
                 nodoAgregado = true;
               }
-              if (nodosCamino.indexOf(nodoActual) > 0) {
-                let nuevoCamino = [];
-                for (var m = nodosCamino.length - 1; m >= nodosCamino.indexOf(nodoActual); m--) {
-                  nuevoCamino.push(nodosCamino[m]);
-                }
+              else if (nodosCamino.indexOf(nodoActual) >= 0) {
+                let nuevoCamino = nodosCamino.slice(0, nodosCamino.indexOf(nodoActual) + 1);
                 nuevoCamino.push(ObjetoFlujo.Flujo[j].Nombre);
-                nuevoCamino=nuevoCamino.reverse();
-                if (caminos.indexOf(nuevoCamino.join("-")) < 0) {
-                  caminos.splice(l + 1, 0, nuevoCamino.join("-"));
+                for (let m = 0; m < caminos.length; m++) {
+                  if (caminos[m].join("-") == nuevoCamino.join("-")) {
+                    nodoAgregado = true;
+                  }
                 }
-                nodoAgregado = true;
+                if (!nodoAgregado) {
+                  caminos.splice(l + 1, 0, nuevoCamino);
+                  nodoAgregado = true;
+                }
                 break;
               }
             }
             if (!nodoAgregado) {
-              caminos.push(ObjetoFlujo.Flujo[j].Nombre + "-" + nodoActual);
+              caminos.push([nodoActual, ObjetoFlujo.Flujo[j].Nombre]);
             }
           }
         }
       }
       nodosVisitados.push(nodoActual);
     }
-    console.log("Caminos encontrados: ", caminos);
+
 
     //Graficar Caminos
-    
+    let nodoFlujoPrincipal = caminos[0][0];
+    let profundidad = 0;
+    for (let i = 0; i < caminos.length; i++) {
+      profundidad = Math.max(profundidad, caminos[i].length);
+    }
 
-
-    let arbol = { nodos: [], enlaces: {} };
-    for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
-      arbol.nodos.push(ObjetoFlujo.Flujo[i].Nombre);
-      for (let j = 0; j < ObjetoFlujo.Flujo[i].EnlacesPermitidos.length; j++) {
-        for (let k = 0; k < ObjetoFlujo.Flujo[i].EnlacesPermitidos[j].NombreInteraccion.length; k++) {
-          if (arbol.enlaces[ObjetoFlujo.Flujo[i].Nombre] === undefined) {
-            arbol.enlaces[ObjetoFlujo.Flujo[i].Nombre] = [];
-          }
-          arbol.enlaces[ObjetoFlujo.Flujo[i].Nombre].push(ObjetoFlujo.Flujo[i].EnlacesPermitidos[j].NombreInteraccion[k]);
+    let caminosNodoFlujoPrincipal = 0;
+    for (let i = 0; i < caminos.length; i++) {
+      if (caminos[i][0] == nodoFlujoPrincipal) {
+        caminosNodoFlujoPrincipal++;
+        for (let j = caminos[i].length; j < profundidad; j++) {
+          caminos[i][j] = "";
         }
       }
     }
-    console.log(arbol);
 
-    let flujo = [["Inicio"]];
-    let nodosAgregados = [flujo[0][0]];
-    for (let i = 0; i < flujo.length; i++) {
-      let nivel = [];
-      for (let j = 0; j < flujo[i].length; j++) {
-        for (let k = 0; k < arbol.nodos.length; k++) {
-          let nodoPadre = flujo[i][j].split("-")[0];
-          if (arbol.enlaces[arbol.nodos[k]].indexOf(nodoPadre) >= 0) {
-            let nombreNodo = arbol.nodos[k];
-            if (nodosAgregados.indexOf(nombreNodo) >= 0) {
-              nombreNodo = "#" + nombreNodo;
-            }
-            else {
-              nodosAgregados.push(nombreNodo);
-            }
-            nivel.push(nombreNodo + "-" + nodoPadre);
-          }
-        }
-      }
-      if (nivel.length > 0) {
-        flujo.push(nivel);
-      }
-    }
-    console.table(flujo);
+    console.log("Caminos encontrados: ", caminos);
 
-    let anchoMaximo = 0;
-    let nivelAnchoMaximo = 0;
-    for (let i = 0; i < flujo.length; i++) {
-      if (flujo[i].length > anchoMaximo) {
-        anchoMaximo = flujo[i].length;
-        nivelAnchoMaximo = i;
+    let tableSpan = {};
+    for (let i = 0; i < profundidad; i++) {
+      for (let j = 0; j < caminosNodoFlujoPrincipal; j++) {
+        if (tableSpan[caminos[j][i]] == undefined) {
+          tableSpan[caminos[j][i]] = 1;
+        }
+        else if (j != 0 && tableSpan[caminos[j][i]] == tableSpan[caminos[j - 1][i]]) {
+          tableSpan[caminos[j][i]] = tableSpan[caminos[j][i]] + 1;
+        }
+
       }
     }
-    //ordenar espacio entre hijos
-    for (let i = nivelAnchoMaximo; i < flujo.length - 1; i++) {
-      let nivel = [];
-      for (let j = 0; j < flujo[i].length; j++) {
-        let nodoPadre = flujo[i][j].split("-")[0];
-        let nodohijo = flujo[i + 1][j] ? flujo[i + 1][j].split("-")[1] : "";
-        if (nodoPadre == nodohijo && nodohijo != "") {
-          nivel.push(flujo[i + 1][j]);
-        }
-        else {
-          flujo[i + 1].splice(j, 0, "");
-          nivel.push("");
-        }
-      };
-      flujo[i + 1] = nivel;
-    }
-    //ordenar espacio entre padres
-    for (let i = nivelAnchoMaximo; i >= 1; i--) {
-      let nivel = [];
-      for (let j = 0; j < flujo[i].length; j++) {
-        let nodoPadre = flujo[i - 1][j] ? flujo[i - 1][j].split("-")[0] : "";
-        let nodohijo = flujo[i][j].split("-")[1];
-        if (nodoPadre == nodohijo && nodohijo != "") {
-          nivel.push(flujo[i - 1][j]);
-        }
-        else {
-          flujo[i - 1].splice(j, 0, "");
-          nivel.push("");
-        }
-      };
-      flujo[i - 1] = nivel;
-    }
-    console.table(flujo);
+    tableSpan["PasoFinal"] = 1;
+    tableSpan[""] = 1;
+    console.log("Span generados: ", tableSpan);
 
     let tabla = document.createElement('table');
-    tabla.classList.add('tablaFlujo');
-    for (let i = 0; i < flujo.length; i++) {
-      let fila = document.createElement('tr');
-      fila.classList.add('filaFlujo');
-      for (let j = 0; j < flujo[i].length; j++) {
-        let celda = document.createElement('td');
+    
 
-        let nombreNodo = flujo[i][j].split("-")[0];
-        if (nombreNodo != "" && nombreNodo != "#Inicio") {
-          let divNodo = document.createElement('div');
-          let divTextoNodo = document.createElement('div');
-          divTextoNodo.innerHTML = nombreNodo;
-          let divEdicionNodo = document.createElement('div');
-          divEdicionNodo.innerHTML = "+";
-          divNodo.appendChild(divEdicionNodo);
-          divEdicionNodo = document.createElement('div');
-          divEdicionNodo.innerHTML = "+";
-          divNodo.appendChild(divEdicionNodo);
-          divNodo.appendChild(divTextoNodo);
-          celda.appendChild(divNodo);
-        }
-
-        //Calcula el colspan para los nodos padre
-        if (i < nivelAnchoMaximo) {
-          let colSpan = 1;
-          while (flujo[i][j + colSpan] == "") {
-            colSpan = colSpan + 1;
-          }
-
-          if (colSpan - 1 > 0) {
-            celda.setAttribute('colspan', colSpan);
-            j = j + (colSpan - 1);
-          }
-        }
-        else {
-          celda.classList.add('celdaHijo');
-        }
+    for (let i = 0; i < caminos.length; i++) {
+      if (caminos[i][0] == nodoFlujoPrincipal) {
+        let fila = document.createElement('tr');
+        for (let j = 0; j < profundidad; j++) {       
+          
 
 
-
-        /* for (let k = 0; k < ObjetoFlujo.Flujo.length; k++) {
-          if (ObjetoFlujo.Flujo[k].Nombre == flujo[i][j].replace("#", "")) {
-            if (ObjetoFlujo.Flujo[k].Respuestas.length > 0) {
-              let divRespuestas = document.createElement('div');
-              for (let l = 0; l < ObjetoFlujo.Flujo[k].Respuestas.length; l++) {
-                let divRespuestaInteraccion = document.createElement('div');
-                divRespuestaInteraccion.innerHTML = ObjetoFlujo.Flujo[k].Respuestas[l];
-                divRespuestas.appendChild(divRespuestaInteraccion);
-              }
-              celdaTexto.appendChild(divRespuestas);
+          if (i == 0 || caminos[i][j] == "PasoFinal" || caminos[i][j] == "" || caminos[i - 1][j] != caminos[i][j]) {
+            let celda = document.createElement('td');
+            if (caminos[i][j] != "") {
+              celda.innerHTML = (j>0?"--":"") + caminos[i][j]+(j+1==profundidad || caminos[i][j+1]==""?"":(tableSpan[caminos[i][j]]==tableSpan[caminos[i][j+1]]?"--":"|"));
+              celda.rowSpan = tableSpan[caminos[i][j]];
             }
+
+            fila.appendChild(celda);
           }
-        } */
-        fila.appendChild(celda);
+        }
+        tabla.appendChild(fila);
       }
-      tabla.appendChild(fila);
     }
     div.appendChild(tabla);
-
 
     const template = document.createElement('template');
     console.log(div.outerHTML);
