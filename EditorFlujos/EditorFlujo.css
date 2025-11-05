@@ -52,3 +52,15 @@
 .diagramaFlujo .celdaHijo >div>div{
   border-top: none !important;
 }
+
+.nodo{
+  display: flex;
+  >span:nth-child(1){
+    background-color: salmon; 
+    height: 100%;
+    display: inline-block;
+  }
+  >span:nth-child(3) {
+  background-color: salmon;
+}
+}

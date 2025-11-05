@@ -119,8 +119,20 @@ class EditorFlujo extends HTMLElement {
 
           if (i == 0 || caminos[i][j] == "PasoFinal" || caminos[i][j] == "" || caminos[i - 1][j] != caminos[i][j]) {
             let celda = document.createElement('td');
+            let nodo = document.createElement('div');
+            nodo.classList.add("nodo")
             if (caminos[i][j] != "") {
-              celda.innerHTML = (j>0?"--":"") + caminos[i][j]+(j+1==profundidad || caminos[i][j+1]==""?"":(tableSpan[caminos[i][j]]==tableSpan[caminos[i][j+1]]?"--":"|"));
+              let conectorPadre = document.createElement('span');
+              conectorPadre.innerHTML=j>0?"--":"";
+              let contenido = document.createElement('span');
+              contenido.innerHTML = caminos[i][j];
+              let conectorHijo = document.createElement('span');
+              conectorHijo.innerHTML = j+1==profundidad || caminos[i][j+1]==""?"":(tableSpan[caminos[i][j]]==tableSpan[caminos[i][j+1]]?"--":"|");
+              nodo.appendChild(conectorPadre);
+              nodo.appendChild(contenido);
+              nodo.appendChild(conectorHijo);
+              celda.appendChild(nodo);
+              //celda.innerHTML = (j>0?"-->":"") + caminos[i][j]+(j+1==profundidad || caminos[i][j+1]==""?"":(tableSpan[caminos[i][j]]==tableSpan[caminos[i][j+1]]?"-->":"|"));
               celda.rowSpan = tableSpan[caminos[i][j]];
             }
 
