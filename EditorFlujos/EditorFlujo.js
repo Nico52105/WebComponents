@@ -121,7 +121,7 @@ class EditorFlujo extends HTMLElement {
         if (caminos[j][0] == nodoFlujoPrincipal) {
           let nodo = document.createElement('div');
           nodo.classList.add('nodo');
-          nodo.innerHTML = caminos[j][i]+(caminos[j][i+1]!=""?"==>":"");
+          nodo.innerHTML = caminos[j][i]+(caminos[j][i+1]!=""&&caminos[j][i+1]!=undefined?"==>":"");
           nodo.style.height = (anchoNodos[caminos[j][i]] / anchoNodos[nodoFlujoPrincipal]) * 100 + "%";
           nivel.appendChild(nodo);
           j=j+anchoNodos[caminos[j][i]]-1;
