@@ -73,12 +73,15 @@ class EditorFlujo extends HTMLElement {
 
 
     //Graficar Caminos
-    let nodoFlujoPrincipal = caminos[0][0];
+
+    // Calcular profundidad máxima
     let profundidad = 0;
     for (let i = 0; i < caminos.length; i++) {
       profundidad = Math.max(profundidad, caminos[i].length);
     }
 
+    // Rellenar con nodos vacíos para igualar profundidades del nodo principal
+    let nodoFlujoPrincipal = caminos[0][0];
     let caminosNodoFlujoPrincipal = 0;
     for (let i = 0; i < caminos.length; i++) {
       if (caminos[i][0] == nodoFlujoPrincipal) {
@@ -91,58 +94,43 @@ class EditorFlujo extends HTMLElement {
 
     console.log("Caminos encontrados: ", caminos);
 
-    let tableSpan = {};
+    // Calcular ancho de nodos
+    let anchoNodos = {};
     for (let i = 0; i < profundidad; i++) {
       for (let j = 0; j < caminosNodoFlujoPrincipal; j++) {
-        if (tableSpan[caminos[j][i]] == undefined) {
-          tableSpan[caminos[j][i]] = 1;
+        if (anchoNodos[caminos[j][i]] == undefined) {
+          anchoNodos[caminos[j][i]] = 1;
         }
-        else if (j != 0 && tableSpan[caminos[j][i]] == tableSpan[caminos[j - 1][i]]) {
-          tableSpan[caminos[j][i]] = tableSpan[caminos[j][i]] + 1;
+        else if (j != 0 && anchoNodos[caminos[j][i]] == anchoNodos[caminos[j - 1][i]]) {
+          anchoNodos[caminos[j][i]] = anchoNodos[caminos[j][i]] + 1;
         }
 
       }
     }
-    tableSpan["PasoFinal"] = 1;
-    tableSpan[""] = 1;
-    console.log("Span generados: ", tableSpan);
+    anchoNodos["PasoFinal"] = 1;
+    anchoNodos[""] = 1;
+    console.log("Anchos generados: ", anchoNodos);
 
-    let tabla = document.createElement('table');
-    
-
-    for (let i = 0; i < caminos.length; i++) {
-      if (caminos[i][0] == nodoFlujoPrincipal) {
-        let fila = document.createElement('tr');
-        for (let j = 0; j < profundidad; j++) {       
-          
-
-
-          if (i == 0 || caminos[i][j] == "PasoFinal" || caminos[i][j] == "" || caminos[i - 1][j] != caminos[i][j]) {
-            let celda = document.createElement('td');
-            let nodo = document.createElement('div');
-            nodo.classList.add("nodo")
-            if (caminos[i][j] != "") {
-              let conectorPadre = document.createElement('span');
-              conectorPadre.innerHTML=j>0?"--":"";
-              let contenido = document.createElement('span');
-              contenido.innerHTML = caminos[i][j];
-              let conectorHijo = document.createElement('span');
-              conectorHijo.innerHTML = j+1==profundidad || caminos[i][j+1]==""?"":(tableSpan[caminos[i][j]]==tableSpan[caminos[i][j+1]]?"--":"|");
-              nodo.appendChild(conectorPadre);
-              nodo.appendChild(contenido);
-              nodo.appendChild(conectorHijo);
-              celda.appendChild(nodo);
-              //celda.innerHTML = (j>0?"-->":"") + caminos[i][j]+(j+1==profundidad || caminos[i][j+1]==""?"":(tableSpan[caminos[i][j]]==tableSpan[caminos[i][j+1]]?"-->":"|"));
-              celda.rowSpan = tableSpan[caminos[i][j]];
-            }
-
-            fila.appendChild(celda);
-          }
+    let editorFlujo = document.createElement('div');
+    editorFlujo.style.height = anchoNodos[nodoFlujoPrincipal] * 100 + "px";
+    editorFlujo.classList.add('diagramaFlujo');
+    for (let i = 0; i < profundidad; i++) {
+      let nivel = document.createElement('div');
+      for (let j = 0; j < caminos.length; j++) {
+        console.log(caminos[j][0] + "==" + nodoFlujoPrincipal);
+        if (caminos[j][0] == nodoFlujoPrincipal) {
+          let nodo = document.createElement('div');
+          nodo.classList.add('nodo');
+          nodo.innerHTML = caminos[j][i]+(caminos[j][i+1]!=""?"==>":"");
+          nodo.style.height = (anchoNodos[caminos[j][i]] / anchoNodos[nodoFlujoPrincipal]) * 100 + "%";
+          nivel.appendChild(nodo);
+          j=j+anchoNodos[caminos[j][i]]-1;
         }
-        tabla.appendChild(fila);
       }
+      editorFlujo.appendChild(nivel);
     }
-    div.appendChild(tabla);
+
+    div.appendChild(editorFlujo);
 
     const template = document.createElement('template');
     console.log(div.outerHTML);

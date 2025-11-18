@@ -3,64 +3,11 @@
   justify-content: center;
 }
 
-.diagramaFlujo table{
-  border-collapse: collapse;
-}
-.diagramaFlujo td{
-  vertical-align: middle;
-  padding: 5px;
-  
-}
-
-.diagramaFlujo td>div{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.diagramaFlujo td>div>div {
-  width: 50%;
-  min-height: 20px;
+.nodo{
+  border: 1px solid black;
   box-sizing: border-box;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.diagramaFlujo td>div>div:last-child {  
-  width: 100%;  
-  padding: 0px 10px;
-}
-
-.diagramaFlujo td>div>div:nth-child(1){
-  border-top: solid 2px black;
-}
-
-.diagramaFlujo td>div>div:nth-child(2){
-  border-top: solid 2px black;
-  border-left: solid 2px black;
-}
-
-.diagramaFlujo td:nth-child(1)>div>div:nth-child(1){
-  border-top: none;
-}
-
-.diagramaFlujo td:last-child>div>div:nth-child(2){
-  border-top: none;
-}
-
-
-.diagramaFlujo .celdaHijo >div>div{
-  border-top: none !important;
-}
-
-.nodo{
-  display: flex;
-  >span:nth-child(1){
-    background-color: salmon; 
-    height: 100%;
-    display: inline-block;
-  }
-  >span:nth-child(3) {
-  background-color: salmon;
-}
-}
