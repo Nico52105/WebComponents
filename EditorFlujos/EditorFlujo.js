@@ -121,10 +121,25 @@ class EditorFlujo extends HTMLElement {
         if (caminos[j][0] == nodoFlujoPrincipal) {
           let nodo = document.createElement('div');
           nodo.classList.add('nodo');
-          nodo.innerHTML = caminos[j][i]+(caminos[j][i+1]!=""&&caminos[j][i+1]!=undefined?"==>":"");
+          let conectorNodoPadre = document.createElement('div');
+          conectorNodoPadre.innerHTML = "&nbsp;";
+          if (caminos[j][i] != ""&& caminos[j][i]!=nodoFlujoPrincipal) {
+            conectorNodoPadre.classList.add('conectorPadre')
+          }
+          nodo.appendChild(conectorNodoPadre);
+          
+          let contenidoNodo = document.createElement('div');
+          contenidoNodo.innerHTML = caminos[j][i];
+          nodo.appendChild(contenidoNodo);
+          
+          let conectorNodoHijo = document.createElement('div');
+          if (caminos[j][i + 1] != "" && caminos[j][i + 1] != undefined) {
+            conectorNodoHijo.innerHTML = "-";
+          }
+          nodo.appendChild(conectorNodoHijo);
           nodo.style.height = (anchoNodos[caminos[j][i]] / anchoNodos[nodoFlujoPrincipal]) * 100 + "%";
           nivel.appendChild(nodo);
-          j=j+anchoNodos[caminos[j][i]]-1;
+          j = j + anchoNodos[caminos[j][i]] - 1;
         }
       }
       editorFlujo.appendChild(nivel);
