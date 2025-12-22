@@ -1,17 +1,41 @@
-.diagramaFlujo{
+.diagramaFlujo {
   display: flex;
   justify-content: center;
 }
 
-.nodo{
+.nodo {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;  
+  justify-content: space-between;
 }
 
-.conectorPadre{
+.conectorPadre {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.conectorPadre>div:first-child {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.conectorPadre.inicio>div:first-child {
+  align-items: end;  
+}
+
+.conectorPadre.final>div:first-child {
+  align-items: start;
+}
+
+.conectorPadre>div:first-child>div {
+  height: 50%;
   border-left: 1px solid black;
+}
+
+.conectorPadre.normal>div:first-child>div {
   height: 100%;
 }
 

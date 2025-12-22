@@ -45,6 +45,39 @@
       "OpcionesTexto": [ "1. Si", "2. No" ]
     },
     {
+      "Nombre": "Paso2.5",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Paso2" ],
+          "MensajesValidos": [ "1.Si", "1", "Si" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje 7", "Mensaje 8", "Mensaje 9" ],
+      "OpcionesTexto": [ "1. Si", "2. No" ]
+    },
+    {
+      "Nombre": "Paso3",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Paso1" ],
+          "MensajesValidos": [ "1.Si", "1", "Si" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje 7", "Mensaje 8", "Mensaje 9" ],
+      "OpcionesTexto": [ "1. Si", "2. No" ]
+    },
+    {
+      "Nombre": "Paso4",
+      "EnlacesPermitidos": [
+        {
+          "NombreInteraccion": [ "Paso1" ],
+          "MensajesValidos": [ "1.Si", "1", "Si" ]
+        }
+      ],
+      "Respuestas": [ "Mensaje 7", "Mensaje 8", "Mensaje 9" ],
+      "OpcionesTexto": [ "1. Si", "2. No" ]
+    },
+    {
       "Nombre": "Datos personales",
       "EnlacesPermitidos": [
         {
@@ -92,7 +125,7 @@
       "Nombre": "PasoFinal",
       "EnlacesPermitidos": [
         {
-          "NombreInteraccion": [ "Inicio", "Paso1", "Paso2", "Reinicio" ],
+          "NombreInteraccion": [ "Inicio", "Paso1","Datos personales", "Paso2", "Paso2.5", "Paso3", "Paso4", "Reinicio" ],
           "MensajesValidos": [ "2.No", "2", "No" ]
         },
         {
