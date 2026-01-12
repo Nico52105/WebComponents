@@ -31,45 +31,7 @@ class EditorFlujo extends HTMLElement {
     link.href = window.location.origin + '/EditorFlujos/EditorFlujo.css';
     div.appendChild(link);
 
-    let caminos = [];
-    let nodosVisitados = [];
-    for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
-      let nodoActual = ObjetoFlujo.Flujo[i].Nombre;
-      for (let j = 0; j < ObjetoFlujo.Flujo.length; j++) {
-        for (let k = 0; k < ObjetoFlujo.Flujo[j].EnlacesPermitidos.length; k++) {
-          if (ObjetoFlujo.Flujo[j].EnlacesPermitidos[k].NombreInteraccion.indexOf(nodoActual) >= 0) {
-            let nodoAgregado = false;
-            for (let l = caminos.length - 1; l >= 0; l--) {
-              let nodosCamino = caminos[l];
-              if (nodosCamino.indexOf(nodoActual) == nodosCamino.length - 1) {
-                if (caminos[l].indexOf(ObjetoFlujo.Flujo[j].Nombre) < 0) {
-                  caminos[l].push(ObjetoFlujo.Flujo[j].Nombre);
-                }
-                nodoAgregado = true;
-              }
-              else if (nodosCamino.indexOf(nodoActual) >= 0) {
-                let nuevoCamino = nodosCamino.slice(0, nodosCamino.indexOf(nodoActual) + 1);
-                nuevoCamino.push(ObjetoFlujo.Flujo[j].Nombre);
-                for (let m = 0; m < caminos.length; m++) {
-                  if (caminos[m].join("-") == nuevoCamino.join("-")) {
-                    nodoAgregado = true;
-                  }
-                }
-                if (!nodoAgregado) {
-                  caminos.splice(l + 1, 0, nuevoCamino);
-                  nodoAgregado = true;
-                }
-                break;
-              }
-            }
-            if (!nodoAgregado) {
-              caminos.push([nodoActual, ObjetoFlujo.Flujo[j].Nombre]);
-            }
-          }
-        }
-      }
-      nodosVisitados.push(nodoActual);
-    }
+    let caminos = this.ObtenerCaminos(ObjetoFlujo);
 
 
     //Graficar Caminos
@@ -111,6 +73,57 @@ class EditorFlujo extends HTMLElement {
     anchoNodos[""] = 1;
     console.log("Anchos generados: ", anchoNodos);
 
+    div.appendChild(this.GraficarFlujo(caminos,anchoNodos,nodoFlujoPrincipal,profundidad));
+
+    const template = document.createElement('template');
+    template.innerHTML = div.outerHTML;
+    return template;
+  }
+
+  ObtenerCaminos(ObjetoFlujo) {
+    let caminos = [];
+    let nodosVisitados = [];
+    for (let i = 0; i < ObjetoFlujo.Flujo.length; i++) {
+      let nodoActual = ObjetoFlujo.Flujo[i].Nombre;
+      for (let j = 0; j < ObjetoFlujo.Flujo.length; j++) {
+        for (let k = 0; k < ObjetoFlujo.Flujo[j].EnlacesPermitidos.length; k++) {
+          if (ObjetoFlujo.Flujo[j].EnlacesPermitidos[k].NombreInteraccion.indexOf(nodoActual) >= 0) {
+            let nodoAgregado = false;
+            for (let l = caminos.length - 1; l >= 0; l--) {
+              let nodosCamino = caminos[l];
+              if (nodosCamino.indexOf(nodoActual) == nodosCamino.length - 1) {
+                if (caminos[l].indexOf(ObjetoFlujo.Flujo[j].Nombre) < 0) {
+                  caminos[l].push(ObjetoFlujo.Flujo[j].Nombre);
+                }
+                nodoAgregado = true;
+              }
+              else if (nodosCamino.indexOf(nodoActual) >= 0) {
+                let nuevoCamino = nodosCamino.slice(0, nodosCamino.indexOf(nodoActual) + 1);
+                nuevoCamino.push(ObjetoFlujo.Flujo[j].Nombre);
+                for (let m = 0; m < caminos.length; m++) {
+                  if (caminos[m].join("-") == nuevoCamino.join("-")) {
+                    nodoAgregado = true;
+                  }
+                }
+                if (!nodoAgregado) {
+                  caminos.splice(l + 1, 0, nuevoCamino);
+                  nodoAgregado = true;
+                }
+                break;
+              }
+            }
+            if (!nodoAgregado) {
+              caminos.push([nodoActual, ObjetoFlujo.Flujo[j].Nombre]);
+            }
+          }
+        }
+      }
+      nodosVisitados.push(nodoActual);
+    }
+    return caminos;
+  }
+
+  GraficarFlujo(caminos,anchoNodos,nodoFlujoPrincipal,profundidad) {
     let editorFlujo = document.createElement('div');
     editorFlujo.style.height = anchoNodos[nodoFlujoPrincipal] * 100 + "px";
     editorFlujo.classList.add('diagramaFlujo');
@@ -165,12 +178,7 @@ class EditorFlujo extends HTMLElement {
       }
       editorFlujo.appendChild(nivel);
     }
-
-    div.appendChild(editorFlujo);
-
-    const template = document.createElement('template');
-    template.innerHTML = div.outerHTML;
-    return template;
+    return editorFlujo;    
   }
 
   render() {
